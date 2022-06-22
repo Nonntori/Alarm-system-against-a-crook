@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MotionDetector: MonoBehaviour
+public class Door: MonoBehaviour
 {
     [SerializeField] UnityEvent _movementEnter;
     [SerializeField] UnityEvent _movementLeave;
