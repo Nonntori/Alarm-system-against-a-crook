@@ -9,18 +9,18 @@ public class Alarm : MonoBehaviour
     private float _recoveryRate = 0.5f;
     private float _requiredValue;
 
-    public void Play()
+    public void PlaySound()
     {
-        if (Door.IsMovement)
-        {
-            _audioSource.Play();
-            _activeCoroutine = StartCoroutine(TakeChangeSoundVolume());
-        }
-        else
-        {
-            StopCoroutine(_activeCoroutine);
-            _activeCoroutine = StartCoroutine(TakeChangeSoundVolume());
-        }
+        _requiredValue = 1f;
+        _audioSource.Play();
+        _activeCoroutine = StartCoroutine(ChangeVolume());
+    }
+
+    public void StopSound()
+    {
+        _requiredValue = 0f;
+        StopCoroutine(_activeCoroutine);
+        _activeCoroutine = StartCoroutine(ChangeVolume());
     }
 
     private void Start()
@@ -28,17 +28,8 @@ public class Alarm : MonoBehaviour
         _audioSource.volume = 0;
     }
 
-    private IEnumerator TakeChangeSoundVolume()
+    private IEnumerator ChangeVolume()
     {
-        if (Door.IsMovement)
-        {
-            _requiredValue = 1f;
-        }
-        else
-        {
-            _requiredValue = 0f;
-        }
-
         while (_audioSource.volume != _requiredValue)
         {
             _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _requiredValue, _recoveryRate * Time.deltaTime);

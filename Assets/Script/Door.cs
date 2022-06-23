@@ -3,20 +3,16 @@ using UnityEngine.Events;
 
 public class Door: MonoBehaviour
 {
-    [SerializeField] UnityEvent _movementEnter;
-    [SerializeField] UnityEvent _movementLeave;
+    [SerializeField] private UnityEvent _movementEnter;
+    [SerializeField] private UnityEvent _movementLeave;
 
-    public static bool IsMovement;
-
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter()
     {
-        IsMovement = true;
         _movementEnter?.Invoke();
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit()
     {
-        IsMovement = false;
         _movementLeave?.Invoke(); 
     }
 }
