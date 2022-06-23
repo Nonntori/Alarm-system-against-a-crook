@@ -3,61 +3,46 @@ using UnityEngine;
 
 public class Alarm : MonoBehaviour
 {
-    //[SerializeField] private AudioSource _audioSource;
-    private AudioSource _audioSource;
-    private Coroutine _coroutine;
+    [SerializeField] private AudioSource _audioSource;
+
+    private Coroutine _activeCoroutine;
     private float _recoveryRate = 0.5f;
-    private float _maximumVolume = 1f;
-    private float _minimumVolume = 0f;
+    private float _requiredValue;
 
-    private void Awake()
+    public void Play()
     {
-        _audioSource = GetComponent<AudioSource>();
+        if (Door.IsMovement)
+        {
+            _audioSource.Play();
+            _activeCoroutine = StartCoroutine(TakeChangeSoundVolume());
+        }
+        else
+        {
+            StopCoroutine(_activeCoroutine);
+            _activeCoroutine = StartCoroutine(TakeChangeSoundVolume());
+        }
     }
 
-    private IEnumerator FadeIn()
+    private void Start()
     {
-        _audioSource.Play();
-        _audioSource.volume = _minimumVolume;
+        _audioSource.volume = 0;
+    }
 
-        while (_audioSource.volume < _maximumVolume)
+    private IEnumerator TakeChangeSoundVolume()
+    {
+        if (Door.IsMovement)
         {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _maximumVolume, _recoveryRate * Time.deltaTime);
+            _requiredValue = 1f;
+        }
+        else
+        {
+            _requiredValue = 0f;
+        }
+
+        while (_audioSource.volume != _requiredValue)
+        {
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _requiredValue, _recoveryRate * Time.deltaTime);
             yield return null;
         }
     }
-
-    private IEnumerator FadeOut()
-    {
-        _audioSource.Play();
-
-        while (_audioSource.volume > _minimumVolume)
-        {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _minimumVolume, _recoveryRate * Time.deltaTime);
-            yield return null;
-        }
-
-        _audioSource.Stop();
-    }
-
-    public void Enable()
-    {
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-        }
-            
-        _coroutine = StartCoroutine(FadeIn());
-    }
-
-    public void Disable()
-    {
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-        }
-
-        _coroutine = StartCoroutine(FadeOut());
-    }
-
 }
