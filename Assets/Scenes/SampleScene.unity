@@ -287,11 +287,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7455310365775417209, guid: 1c9f60734fede5c48ab8aa46287e862e, type: 3}
       propertyPath: _movementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Play
+      value: PlaySound
       objectReference: {fileID: 0}
     - target: {fileID: 7455310365775417209, guid: 1c9f60734fede5c48ab8aa46287e862e, type: 3}
       propertyPath: _movementLeave.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Play
+      value: StopSound
       objectReference: {fileID: 0}
     - target: {fileID: 7455310365775417209, guid: 1c9f60734fede5c48ab8aa46287e862e, type: 3}
       propertyPath: _movementEnter.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
